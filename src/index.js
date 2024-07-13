@@ -1,6 +1,7 @@
 // import mongoose from "mongoose";
 // import { DB_NAME } from "./constants.js";
  import dotenv from 'dotenv';
+import { app } from './app.js';
  import connectedDB from "./db/index.js";
 
 dotenv.config(
@@ -10,6 +11,18 @@ dotenv.config(
 )
 
  connectedDB()
+ .then(()=>{
+    app.listen(process.env.PORT, ()=>{
+        console.log(`listining on port ${process.env.PORT}`)
+    })
+    app.on("error", (error)=>{
+        console.log("ERR: ", error)
+        throw error
+    })
+ })
+ .catch((error)=> {
+    console.log("error from db: ", error)
+ })
 
 
 
